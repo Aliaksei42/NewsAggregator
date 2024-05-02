@@ -27,49 +27,72 @@ const App = () => {
         <>
             <div className="showcase">
                 <div className="overlay">
-                    <h1 className="textBold">
-                        Viewing articles about {term}
-                    </h1>
-                    <SearchForm searchText={(text) => setTerm(text)}/>
+                    <h1 className="textBold">Viewing articles about {term}</h1>
+                    <SearchForm searchText={(text) => setTerm(text)} />
                 </div>
             </div>
-            {isLoading ? ( <h1 className='loading'>Loading...</h1> ) : (
-            <section className='section'>
-                {articles.map((article) => {
-                    const {
-                        abstract,
-                        headline: { main },
-                        byline: { original },
-                        lead_paragraph,
-                        news_desk,
-                        section_name,
-                        web_url,
-                        _id,
-                        word_count,
-                    } = article
+            {isLoading ? (
+                <h1 className="loading">Loading...</h1>
+            ) : (
+                <section className="section">
+                    {articles.map((article) => {
+                        const {
+                            abstract,
+                            headline: { main },
+                            byline: { original },
+                            lead_paragraph,
+                            news_desk,
+                            section_name,
+                            web_url,
+                            _id,
+                            word_count,
+                            multimedia,
+                        } = article
 
-                    return (
-                        <article key={_id} className='card'>
-                            <h2 className='headerArticle'>{main}</h2>
-                            <p>{abstract}</p>
-                            <p>{lead_paragraph}</p>
+                        const multimediaXLarge = multimedia.find(
+                            (item) => item.subtype === 'xlarge'
+                        )
 
-                            <ul className='list'>
-                                <li>{original}</li>
-                                <li>
-                                    <span className='list-item'>News Desk: </span>{news_desk}</li>
-                                <li>
-                                <span className='list-item'>Section Name: </span>{section_name}</li>
-                                <li>
-                                <span className='list-item'>Word Count: </span>{word_count}</li>
-                            </ul>
-                            <a href={web_url} target="_blank" className="a">
-                                Web Resource
-                            </a>
-                        </article>
-                    )
-                })}
-            </section>)}
+                        return (
+                            <article key={_id} className="card">
+                                <h2 className="headerArticle">{main}</h2>
+                                <p>{abstract}</p>
+                                <p>{lead_paragraph}</p>
+                                {multimediaXLarge && (
+                                    <img
+                                        src={`https://www.nytimes.com/${multimediaXLarge.url}`}
+                                        alt="Article"
+                                    />
+                                )}
+                                <ul className="list">
+                                    <li>{original}</li>
+                                    <li>
+                                        <span className="list-item">
+                                            News Desk:{' '}
+                                        </span>
+                                        {news_desk}
+                                    </li>
+                                    <li>
+                                        <span className="list-item">
+                                            Section Name:{' '}
+                                        </span>
+                                        {section_name}
+                                    </li>
+                                    <li>
+                                        <span className="list-item">
+                                            Word Count:{' '}
+                                        </span>
+                                        {word_count}
+                                    </li>
+                                </ul>
+                                <a href={web_url} target="_blank" className="a">
+                                    Web Resource
+                                </a>
+                            </article>
+                        )
+                    })}
+                </section>
+            )}
         </>
     )
 }
